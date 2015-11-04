@@ -1,0 +1,4 @@
+MDK-ARM/SweepRobot_Testing_Host_STM32F4 Configuration/*
+*.lst
+*.uvoptx
+*.dep
