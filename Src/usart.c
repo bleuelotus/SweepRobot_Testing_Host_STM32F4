@@ -35,10 +35,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 
+#include <stdio.h>
+#include <string.h>
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
-
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+  
+#define STDIO_UART          USART1
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -119,7 +124,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 } 
 
 /* USER CODE BEGIN 1 */
+PUTCHAR_PROTOTYPE
+{
+    USART_SendData(STDIO_UART, (u8) ch);
 
+    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_TXE) == RESET);
+
+    return (ch);
+}
+
+GETCHAR_PROTOTYPE
+{
+    int ch;
+    
+    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_RXNE) == RESET);
+    ch = USART_ReceiveData(STDIO_UART);
+    
+//    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_TC) == RESET);
+//    USART_SendData(STDIO_UART, (uint8_t)ch);
+    
+    return ch;
+}
 /* USER CODE END 1 */
 
 /**
