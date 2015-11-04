@@ -35,15 +35,20 @@
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 
-#include <stdio.h>
-#include <string.h>
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#define GETCHAR_PROTOTYPE int fgetc(FILE *f)
-  
-#define STDIO_UART          USART1
+
+#ifdef __GNUC__
+  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+     set to 'Yes') calls __io_putchar() */
+  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+  #define GETCHAR_PROTOTYPE int __io_fgetc(FILE *f)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+  #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+#endif /* __GNUC__ */
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -79,17 +84,24 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
   
     /**USART1 GPIO Configuration    
     PA9     ------> USART1_TX
-    PA10     ------> USART1_RX 
+    PB7     ------> USART1_RX 
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+    GPIO_InitStruct.Pin = GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
     /* Peripheral interrupt init*/
-    HAL_NVIC_SetPriority(USART1_IRQn, 3, 3);
+    HAL_NVIC_SetPriority(USART1_IRQn, 10, 0);
     HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 1 */
 
@@ -110,9 +122,11 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
   
     /**USART1 GPIO Configuration    
     PA9     ------> USART1_TX
-    PA10     ------> USART1_RX 
+    PB7     ------> USART1_RX 
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9);
+
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7);
 
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(USART1_IRQn);
@@ -124,24 +138,31 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 } 
 
 /* USER CODE BEGIN 1 */
+
+
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
 PUTCHAR_PROTOTYPE
 {
-    USART_SendData(STDIO_UART, (u8) ch);
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF); 
 
-    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_TXE) == RESET);
-
-    return (ch);
+  return ch;
 }
 
 GETCHAR_PROTOTYPE
 {
     int ch;
     
-    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_RXNE) == RESET);
-    ch = USART_ReceiveData(STDIO_UART);
+    while (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE) == RESET);
+    ch = HAL_UART_Receive(&huart1, (uint8_t *)&ch, 1, 0xFFFF);
     
-//    while (USART_GetFlagStatus(STDIO_UART, USART_FLAG_TC) == RESET);
-//    USART_SendData(STDIO_UART, (uint8_t)ch);
+    while (__HAL_UART_GET_IT_SOURCE(&huart1, UART_FLAG_TC) == RESET);
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xFFFF); 
     
     return ch;
 }

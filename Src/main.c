@@ -1,7 +1,6 @@
 /**
   ******************************************************************************
   * File Name          : main.c
-  * Author             : Meredith Rowe
   * Description        : Main program body
   ******************************************************************************
   *
@@ -33,8 +32,13 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "cmsis_os.h"
+#include "fatfs.h"
 #include "rtc.h"
+#include "sdio.h"
+#include "tim.h"
 #include "usart.h"
+#include "usb_host.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
@@ -50,6 +54,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -78,24 +83,34 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_RTC_Init();
+  MX_SDIO_SD_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
+  MX_TIM6_Init();
+  MX_TIM7_Init();
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-
+  printf("Initial OK\r\n");
   /* USER CODE END 2 */
+
+  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+  
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    while (1)
+    {
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-    LED_GREEN_ON();
-    HAL_Delay(500);
-    LED_GREEN_OFF();
-    HAL_Delay(500);
-  }
+        
+    }
   /* USER CODE END 3 */
 
 }
@@ -121,7 +136,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 4;
   RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1
