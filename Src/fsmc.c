@@ -46,7 +46,7 @@ SRAM_HandleTypeDef hsram1;
 void MX_FSMC_Init(void)
 {
   FSMC_NORSRAM_TimingTypeDef WriteTiming;
-  FSMC_NORSRAM_TimingTypeDef ReadTiming;
+  FSMC_NORSRAM_TimingTypeDef WriteReadTiming;
 
   /** Perform the SRAM1 memory initialization sequence
   */
@@ -67,14 +67,14 @@ void MX_FSMC_Init(void)
   hsram1.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
   hsram1.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
   
-  /* ReadTiming */
-  ReadTiming.AddressSetupTime = 15;
-  ReadTiming.AddressHoldTime = 0;
-  ReadTiming.DataSetupTime = 60;
-  ReadTiming.BusTurnAroundDuration = 0;
-  ReadTiming.CLKDivision = 0;
-  ReadTiming.DataLatency = 0;
-  ReadTiming.AccessMode = FSMC_ACCESS_MODE_A;
+  /* WriteReadTiming */
+  WriteReadTiming.AddressSetupTime = 15;
+  WriteReadTiming.AddressHoldTime = 0;
+  WriteReadTiming.DataSetupTime = 60;
+  WriteReadTiming.BusTurnAroundDuration = 0;
+  WriteReadTiming.CLKDivision = 0;
+  WriteReadTiming.DataLatency = 0;
+  WriteReadTiming.AccessMode = FSMC_ACCESS_MODE_A;
   
   /* WriteTiming */
   WriteTiming.AddressSetupTime = 9;
@@ -86,7 +86,7 @@ void MX_FSMC_Init(void)
   WriteTiming.AccessMode = FSMC_ACCESS_MODE_A;
   /* ExtTiming */
 
-  HAL_SRAM_Init(&hsram1, &ReadTiming, &WriteTiming);
+  HAL_SRAM_Init(&hsram1, &WriteReadTiming, &WriteTiming);
 
 }
 

@@ -49,3 +49,7 @@ MDK-ARM/SweepRobot_Testing_Host_STM32F4 Configuration/*
 /MDK-ARM/RTE/Graphics/
 /Middlewares/ST/STM32_Audio/Addons/PDM/_htmresc
 /Middlewares/Third_Party/LibJPEG/testimg.bmp
+/Drivers/BSP/HARDWARE/LCD_TFT/lcd_tft.c
+/Drivers/BSP/SYSTEM/delay/delay.c
+/Drivers/BSP/SYSTEM/sys/sys.c
+/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_msp.c

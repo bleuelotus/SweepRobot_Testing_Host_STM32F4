@@ -174,11 +174,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4107</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -354,7 +354,7 @@
             <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
-            <OneElfS>1</OneElfS>
+            <OneElfS>0</OneElfS>
             <Strict>0</Strict>
             <EnumInt>0</EnumInt>
             <PlainCh>0</PlainCh>
@@ -1305,6 +1305,21 @@
               <FileName>usbh_hid_parser.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\ST\STM32_USB_Host_Library\Class\HID\Src\usbh_hid_parser.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_msc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Src\usbh_msc.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_msc_bot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Src\usbh_msc_bot.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_msc_scsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\ST\STM32_USB_Host_Library\Class\MSC\Src\usbh_msc_scsi.c</FilePath>
             </File>
           </Files>
         </Group>

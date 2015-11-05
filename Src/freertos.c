@@ -116,8 +116,7 @@ void StartDefaultTask(void const * argument)
     
     osThreadTerminate(defaultTaskHandle);
 	for(;;){
-	  
-	  osDelay(10);
+	  osDelay(1);
 	}
 	/* USER CODE END StartDefaultTask */
 }

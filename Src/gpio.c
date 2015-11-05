@@ -75,8 +75,8 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin : PB15 */
   GPIO_InitStruct.Pin = LCD_BACK_LIGHT_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(LCD_BACK_LIGHT_GPIO, &GPIO_InitStruct);
 
 }

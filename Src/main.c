@@ -44,7 +44,7 @@
 #include "fsmc.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "delay.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -83,9 +83,10 @@ int main(void)
   SystemClock_Config();
 
   /* Initialize all configured peripherals */
+  delayinit(168000000);
   MX_GPIO_Init();
   MX_FSMC_Init();
-  MX_RTC_Init();
+//  MX_RTC_Init();
   MX_SDIO_SD_Init();
   MX_SPI3_Init();
   MX_TIM1_Init();
@@ -94,9 +95,18 @@ int main(void)
   MX_TIM7_Init();
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
-
+ 
+  LED_GREEN_ON();
+  delay_ms(500);
+  LED_GREEN_OFF();
+  delay_ms(500);
+  LED_GREEN_ON();
+  LCD_BACK_LIGHT_OFF();
+  LCD_BACK_LIGHT_ON();
+  LCD_Init();
+  
   /* USER CODE BEGIN 2 */
-//  printf("Initial OK\r\n");
+  printf("Initial OK\r\n");
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
