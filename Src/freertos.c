@@ -46,18 +46,19 @@
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN Variables */
-
+osThreadId ledGreenTaskHandle;
+osThreadId lcdDisplayTaskHandle;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
-
 extern void MX_FATFS_Init(void);
 extern void MX_USB_HOST_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
-void LED_GREEN_TASK(void const * argument);
+void StartLedGreenTask(void const * argument);
+void StartLcdDisplayTask(void const * argument);
 /* USER CODE END FunctionPrototypes */
 
 /* Hook prototypes */
@@ -88,8 +89,7 @@ void MX_FREERTOS_Init(void) {
   
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  osThreadDef(LedGreenTask, LED_GREEN_TASK, osPriorityNormal, 0, configMINIMAL_STACK_SIZE);
-  osThreadCreate(osThread(LedGreenTask), NULL);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -107,31 +107,40 @@ void StartDefaultTask(void const * argument)
 	MX_USB_HOST_Init();
 	
 	/* USER CODE BEGIN StartDefaultTask */
-
+    osThreadDef(ledGreenTask, StartLedGreenTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE);
+    ledGreenTaskHandle = osThreadCreate(osThread(ledGreenTask), NULL);
+    
+    osThreadDef(lcdDisplayTask, StartLcdDisplayTask, osPriorityNormal, 0, configMINIMAL_STACK_SIZE);
+    lcdDisplayTaskHandle = osThreadCreate(osThread(lcdDisplayTask), NULL);
 	/* Infinite loop */
-	for(;;)
-	{
-	  printf("DefaultTask\r\n");
-	  osDelay(100);
+    
+    osThreadTerminate(defaultTaskHandle);
+	for(;;){
+	  
+	  osDelay(10);
 	}
 	/* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Application */
-void LED_GREEN_TASK(void const * argument)
+void StartLedGreenTask(void const * argument)
 {
-  while(1){
-	LED_GREEN_TOGGLE();
+  for(;;){
+    LED_GREEN_TOGGLE();
     printf("led_toggle\r\n");
-	osDelay(500);
+    osDelay(500);
   }
 }
 
-void LCD_DISPLAY(void const * argument)
+void StartLcdDisplayTask(void const * argument)
 {
-  while(1){
-	
-	osDelay(20);
+//  GUI_SetBkColor(0x0000);
+//  GUI_Clear();
+
+  for(;;){
+
+	printf("DefaultTask\r\n");
+	osDelay(200);
   }
 }
 /* USER CODE END Application */

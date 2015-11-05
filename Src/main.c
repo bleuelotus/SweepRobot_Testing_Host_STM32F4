@@ -36,10 +36,12 @@
 #include "fatfs.h"
 #include "rtc.h"
 #include "sdio.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
 #include "gpio.h"
+#include "fsmc.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -82,16 +84,19 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_FSMC_Init();
   MX_RTC_Init();
   MX_SDIO_SD_Init();
+  MX_SPI3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM6_Init();
   MX_TIM7_Init();
   MX_USART1_UART_Init();
+  MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
-  printf("Initial OK\r\n");
+//  printf("Initial OK\r\n");
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -104,13 +109,13 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-    while (1)
-    {
+  while (1)
+  {
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-        
-    }
+
+  }
   /* USER CODE END 3 */
 
 }

@@ -105,7 +105,7 @@ Attention : Do not modify this file ! If you do, you will not
 #endif
 
 #ifndef GUI_NUM_LAYERS
-  #define GUI_NUM_LAYERS      1
+  #define GUI_NUM_LAYERS      2
 #endif
 
 #ifndef GUI_SUPPORT_CURSOR

@@ -604,8 +604,7 @@ void LCD_Init(void)
   readWriteTiming.FSMC_DataLatency = 0x00;
   readWriteTiming.FSMC_AccessMode = FSMC_AccessMode_A;	 //模式A 
     
-
-	writeTiming.FSMC_AddressSetupTime =9;	      //地址建立时间（ADDSET）为9个HCLK =54ns 
+  writeTiming.FSMC_AddressSetupTime =9;	      //地址建立时间（ADDSET）为9个HCLK =54ns 
   writeTiming.FSMC_AddressHoldTime = 0x00;	 //地址保持时间（A		
   writeTiming.FSMC_DataSetupTime = 8;		 //数据保存时间为6ns*9个HCLK=54ns
   writeTiming.FSMC_BusTurnAroundDuration = 0x00;
